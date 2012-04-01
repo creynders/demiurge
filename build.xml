@@ -31,6 +31,8 @@
 
     <target name="copy" depends="properties" description="copies the src to build">
         <copy file="${dir.src}/${name.base.js}" tofile="${file.consolidated.js}"/>
+        <replace file="${file.consolidated.js}" token="%VERSION%" value="${version}"/>
+        <replace file="${file.consolidated.js}" token="%TIMESTAMP%" value="${timestamp}"/>
     </target>
 
     <!-- JSHint -->
