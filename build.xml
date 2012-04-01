@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="asf" default="properties" basedir=".">
+
+    <target name="version" description="Reads previous version number from file and prompts user to overwrite it">
+        <loadfile property="version.old" srcFile="version.txt" />
+        <input message="Current version number is ${version.old}. Please enter the new version number:"
+            defaultValue="${version.old}" addproperty="version"/>
+        <echo file="version.txt" message="${version}" />
+    </target>
+
+    <!-- PROPERTIES -->
+    <target name="properties" description="sets up properties">
+        <loadfile property="version" srcFile="version.txt" />
+        <tstamp>
+            <format property="timestamp" pattern="yyyyMMddHHmmss"/>
+        </tstamp>
+        <!-- allow user-specific overrides -->
+        <property file="build.user.properties"/>
+        <property file="build.properties"/>
+    </target>
+    
+    <!-- CREATE BUILD -->
+
+    <target name="create_build" depends="properties" description="creates build dir from scratch">
+        <echo>Creating build...</echo>
+        <delete dir="${dir.build}" />
+        <mkdir dir="${dir.build.current}" />
+        <echo>Finished.</echo>
+    </target>
+
+    <!-- JSHint -->
+  	<target name="jshint" depends="properties, consolidate" description="JS code check">
+        <echo>Checking syntax...</echo>
+          <exec executable="phantomjs" dir="${basedir}" failonerror="true" resultproperty="specs.results">
+              <arg line="'${file.jshint-runner.js}'" />
+              <arg line="'${file.jshint.js}'" />
+              <arg line="'${file.consolidated.js}'" />
+              <arg line="${timeout.phantom}" />
+          </exec>
+        <echo>Finished</echo>
+  	</target>
+
+    <!-- SPECS -->
+    <target name="specs" depends="properties" description="runs the specs">
+        <echo>Running specs...</echo>
+        <exec executable="phantomjs" dir="${basedir}" failonerror="true" resultproperty="specs.results">
+            <arg line="'${file.jasmine-runner.js}'" />
+            <arg line="'${file.specs-runner.html}'" />
+            <arg line="${timeout.phantom}" />
+        </exec>
+        <echo>Finished.</echo>
+    </target>
+
+
+    <!-- MINIFY -->
+    <target name="minify" depends="properties,create_build" description="minifies">
+        <echo>Minifying...</echo>
+        <exec executable="java" dir="${basedir}" failonerror="true">
+            <arg line="-jar '${file.yui_compressor.jar}'" />
+            <arg line="--type js" />
+            <arg line="-o '${file.minified.js}'" />
+            <arg line="'${file.consolidated.js}'" />
+        </exec>
+        <echo>Finished</echo>
+    </target>
+
+
+    <!-- FINISH -->
+
+    <target name="finish" depends="properties" description="finishes the build by moving everything form build to bin">
+        <echo>Finishing...</echo>
+        <delete dir="${dir.bin}" />
+        <mkdir dir="${dir.bin}" />
+        <move file="${dir.build.current}" tofile="${dir.bin}"/>
+        <echo>Finished.</echo>
+    </target>
+
+
+    <!-- BUILD -->
+    <target name="build" depends="version, properties, create_build, jshint, specs, minify, finish">
+    </target>
+
+</project>
+
