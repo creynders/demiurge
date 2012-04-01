@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<project name="asf" default="properties" basedir=".">
+<project name="demiurge" default="properties" basedir=".">
 
     <target name="version" description="Reads previous version number from file and prompts user to overwrite it">
         <loadfile property="version.old" srcFile="version.txt" />
@@ -29,8 +29,12 @@
         <echo>Finished.</echo>
     </target>
 
+    <target name="copy" depends="properties" description="copies the src to build">
+        <copy file="${dir.src}/${name.base.js}" tofile="${file.consolidated.js}"/>
+    </target>
+
     <!-- JSHint -->
-  	<target name="jshint" depends="properties, consolidate" description="JS code check">
+  	<target name="jshint" depends="properties, copy" description="JS code check">
         <echo>Checking syntax...</echo>
           <exec executable="phantomjs" dir="${basedir}" failonerror="true" resultproperty="specs.results">
               <arg line="'${file.jshint-runner.js}'" />
@@ -78,7 +82,7 @@
 
 
     <!-- BUILD -->
-    <target name="build" depends="version, properties, create_build, jshint, specs, minify, finish">
+    <target name="build" depends="version, properties, create_build, copy, jshint, specs, minify, finish">
     </target>
 
 </project>
