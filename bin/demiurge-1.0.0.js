@@ -5,7 +5,7 @@
  * @author Camille Reynders
  * Date: 31/03/12
  * Time: 09:41
- * version %VERSION%
+ * version 1.0.0
  */
 
 ( function( context ){
@@ -13,7 +13,7 @@
     "use strict";
 
     var demiurge = {
-        VERSION : '%VERSION%'
+        VERSION : '1.0.0'
     };
 
     demiurge.createProxy = function( o ) {
