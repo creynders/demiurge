@@ -13,5 +13,6 @@ Navigate to your project directory in terminal, and lets say you want to add it 
 git add submodule git@github.com:creynders/demiurge.git vendor/demiurge
 cd vendor/demiurge
 git checkout gh-pages
+#optionally delete the master branch (of the demiurge module !!)
 git branch -d master
 ```
