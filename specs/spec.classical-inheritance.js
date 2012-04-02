@@ -91,12 +91,12 @@ describe("Classical", function(){
         it( "should let the instance be of the super type", function(){
             expect( foo ).toBeInstanceOf( Base );
         });
-        it( "should not share its primitive instance members with others", function(){
+        it( "should not share its primitive instance members with other instances", function(){
             var f = new Foo();
             f.bar = 'notbar';
             expect( f.bar ).not.toEqual( foo.bar );
         });
-        it( "should not share its complex instance members with others", function(){
+        it( "should not share its complex instance members with other instances", function(){
             var f = new Foo();
             f.fooArr.push( 'a' );
             expect( f.fooArr ).not.toEqual( foo.fooArr );
