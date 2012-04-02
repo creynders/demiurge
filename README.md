@@ -5,7 +5,7 @@ for full explanation and examples
 
 ## Adding Demiurge as a Git module
 
-If you want to use Demiurge as a git module, you could obviously use the ```master``` branch, but a better solution would be to use the ```gh-pages``` branch which serves the ```bin``` directory with the minified and normal versions (all of them!) of the lib, it acts as a linking archive and therefore is better suited for this purpose.
+If you want to use Demiurge as a git module, you could obviously use the ```master``` branch, but a better solution would be to use the ```gh-pages``` branch which serves the ```bin``` directory with the minified and normal versions of the lib, it acts as a linking archive and therefore is better suited for this purpose.
 
 Navigate to your project directory in terminal, and lets say you want to add it to a ```vender``` directory:
 
